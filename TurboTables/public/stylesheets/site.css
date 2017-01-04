@@ -1,0 +1,43 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set widths on the form inputs since otherwise they're 100% wide */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+/* Default is hide for spinner*/
+.spinner {
+     display: none;
+     top: 30%;
+     left: 30%;
+     width: 300px;
+     height: 200px;
+     position: fixed;
+     z-index: 1;
+}
+/* Default is hide for NoRecordsFound */
+.no-records-found {
+     display: none;
+}
+.table-filter {
+     float: right;
+     text-align: right;
+}
+.table-pageSizer {
+     float: right;
+     display: inline;
+}
+.table-pager {
+     display: inline;
+}

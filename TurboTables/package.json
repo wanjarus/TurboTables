@@ -1,0 +1,24 @@
+{
+  "name": "turbotables",
+  "version": "0.9.1",
+  "description": "Simple Table Paging",
+  "main": "app.js",
+  "author": {
+    "name": "wbw07"
+  },
+  "scripts": {
+    "start": "node ./app.js"
+  },
+  "dependencies": {
+    "body-parser": "~1.15.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.2.0",
+    "express": "~4.13.4",
+    "hbs": "~4.0.0",
+    "lodash": "^4.17.2",
+    "morgan": "~1.7.0",
+    "request": "^2.74.0",
+    "request-debug": "^0.2.0",
+    "serve-favicon": "~2.3.0"
+  }
+}

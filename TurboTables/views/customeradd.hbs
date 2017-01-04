@@ -1,0 +1,38 @@
+<h1>{{title}}</h1>
+<br />
+<div class="row">
+    <div class="row">
+        {{#with customer}}
+        <form id="createForm" class="col-xs-6 bg-success img-rounded">
+            <fieldset>
+                <div>
+                    <label class="col-xs-3 text-right">First Name:</label>
+                    <input name="FirstName" id="FirstName" type="text" class="text-box single-line" value="{{FirstName}}" />
+                </div>
+                <div>
+                    <label class="col-xs-3 text-right">Last Name:</label>
+                    <input name="LastName" id="LastName" type="text" class="text-box single-line" value="{{LastName}}" />
+                </div>
+                <div>
+                    <label class="col-xs-3 text-right">E-Mail:</label>
+                    <input name="EMail" id="EMail" type="text" class="text-box single-line" value="{{EMail}}" />
+                </div>
+                <p>
+                    <input type="submit" value="Save" />
+                </p>
+            </fieldset>
+        </form>
+        {{/with}}
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-lg-4">
+            <a href="/customer" class="btn btn-primary">Back</a>
+        </div>
+    </div>
+</div>
+{{#contentFor 'pageScripts'}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js" type="text/javascript"></script>
+<script src="/javascripts/ajaxcommon.js" type="text/javascript"></script>
+<script src="/javascripts/customeradd.js" type="text/javascript"></script>
+{{/contentFor}}

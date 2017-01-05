@@ -26,7 +26,7 @@
 //   ProcessSortEvent(id)
 
 //Define constructor for TurboTables Library
-function NextPageLib(options) {
+function TurboTablesLib(options) {
 
 
      //register the instance
@@ -97,39 +97,39 @@ function NextPageLib(options) {
      return this;
 };
 
-NextPageLib.prototype.setDataBinding = function (dataBinder) {
+TurboTablesLib.prototype.setDataBinding = function (dataBinder) {
      //Call data binding
      this.dataBinder = dataBinder;
      return this;
 };
 
-NextPageLib.prototype.endDataBinding = function (totalItems) {
+TurboTablesLib.prototype.endDataBinding = function (totalItems) {
      this.totalItems = totalItems;
      document.getElementById(this.tableId).setAttribute(this.totalItemsAttribute, this.totalItems);
      //Stop the spinner
      this.ShowSpinner(false);
 };
 
-NextPageLib.prototype.getPage = function () {
+TurboTablesLib.prototype.getPage = function () {
      return this.page;
 };
 
-NextPageLib.prototype.getPageSize = function () {
+TurboTablesLib.prototype.getPageSize = function () {
      return this.pageSize;
 };
 
 
-NextPageLib.prototype.getSortColumn = function () {
+TurboTablesLib.prototype.getSortColumn = function () {
      return this.sortColumn;
 };
 
-NextPageLib.prototype.getSortDirection = function () {
+TurboTablesLib.prototype.getSortDirection = function () {
      return this.sortDirection;
 };
 //Create 'private' Helper functions
 
 //Create the Filter Row elements (Table info and filter input) above the table
-NextPageLib.prototype.CreateFilterRow = function (tableId) {
+TurboTablesLib.prototype.CreateFilterRow = function (tableId) {
 
      //Create elements in the filter row
      var filterNode = document.createElement('div');
@@ -175,7 +175,7 @@ NextPageLib.prototype.CreateFilterRow = function (tableId) {
 };
 
 //Add the Spinner element above the table
-NextPageLib.prototype.AddSpinner = function (tableId) {
+TurboTablesLib.prototype.AddSpinner = function (tableId) {
 
      //Create spinner elements
      var spinnerNode = document.createElement('div');
@@ -192,7 +192,7 @@ NextPageLib.prototype.AddSpinner = function (tableId) {
      insertPosition.parentNode.insertBefore(spinnerNode, insertPosition);
 };
 
-NextPageLib.prototype.EnableRowSorting = function (tableId) {
+TurboTablesLib.prototype.EnableRowSorting = function (tableId) {
      //throw 'Not implemented exception';
      var self = this;
 
@@ -202,14 +202,17 @@ NextPageLib.prototype.EnableRowSorting = function (tableId) {
      var colHeaders = colRows[0].getElementsByTagName('th');
 
      for (var idx = 0; idx < colHeaders.length; idx++) {
-          colHeaders[idx].addEventListener('click', function () {
-               self.ProcessSortEvent(this.id);
-          });
+          //If sorting specified for the column, then hook the click event
+          if (colHeaders[idx].className.indexOf('sortable') !== -1) {
+               colHeaders[idx].addEventListener('click', function () {
+                    self.ProcessSortEvent(this.id);
+               });
+          };
      };
 };
 
 //Create the Paging controls (first, previous, next, last) and Page Sizer dropdown list
-NextPageLib.prototype.CreatePagingControls = function (tableId) {
+TurboTablesLib.prototype.CreatePagingControls = function (tableId) {
 
      //Create elements in the paging controls row
      var pagingCtrlNode = document.createElement('div');
@@ -295,7 +298,7 @@ NextPageLib.prototype.CreatePagingControls = function (tableId) {
 };
 
 //Move to first display page
-NextPageLib.prototype.FirstPage = function () {
+TurboTablesLib.prototype.FirstPage = function () {
      this.page = 1;
      //Start the spinner
      this.ShowSpinner(true);
@@ -305,7 +308,7 @@ NextPageLib.prototype.FirstPage = function () {
 };
 
 //Move to previous display page
-NextPageLib.prototype.PreviousPage = function () {
+TurboTablesLib.prototype.PreviousPage = function () {
      if (this.page > 1) {
           this.page = this.page - 1;
           //Start the spinner
@@ -317,7 +320,7 @@ NextPageLib.prototype.PreviousPage = function () {
 };
 
 //Move to next display page
-NextPageLib.prototype.NextPage = function () {
+TurboTablesLib.prototype.NextPage = function () {
     var lastPage = 0;
 
     var remainder = this.totalItems % this.pageSize;
@@ -339,7 +342,7 @@ NextPageLib.prototype.NextPage = function () {
 };
 
 //Move to last display page
-NextPageLib.prototype.LastPage = function () {
+TurboTablesLib.prototype.LastPage = function () {
      var remainder = this.totalItems % this.pageSize;
      if (remainder > 0) {
           this.page = ((this.totalItems - remainder) / this.pageSize) + 1;
@@ -356,7 +359,7 @@ NextPageLib.prototype.LastPage = function () {
 };
 
 //UpdatePageSize
-NextPageLib.prototype.UpdatePageSize = function () {
+TurboTablesLib.prototype.UpdatePageSize = function () {
     var result = 1;
     //always reset to page 1 on Page Size change
     this.page = 1;
@@ -374,7 +377,7 @@ NextPageLib.prototype.UpdatePageSize = function () {
 };
 
 //show page number
-NextPageLib.prototype.ShowTableInfo = function () {
+TurboTablesLib.prototype.ShowTableInfo = function () {
 
      //Update the Table Info label
      var high = this.pageSize * this.page;
@@ -391,7 +394,7 @@ NextPageLib.prototype.ShowTableInfo = function () {
      this.UpdatePagerControls();
 };
 
-NextPageLib.prototype.UpdatePagerControls = function() {
+TurboTablesLib.prototype.UpdatePagerControls = function() {
      var lastPage = 0;
 
      var remainder = this.totalItems % this.pageSize;
@@ -417,7 +420,7 @@ NextPageLib.prototype.UpdatePagerControls = function() {
      }
 };
 
-NextPageLib.prototype.ShowSpinner = function (show) {
+TurboTablesLib.prototype.ShowSpinner = function (show) {
      if (show)
           document.getElementById(this.spinnerId).style.display = 'block';
      else
@@ -425,7 +428,7 @@ NextPageLib.prototype.ShowSpinner = function (show) {
 
 };
 
-NextPageLib.prototype.FilterTable = function () {
+TurboTablesLib.prototype.FilterTable = function () {
      var input, filter, tableBody, rows, rowData, rowIdx, dataIdx;
      var found = false;
 
@@ -454,7 +457,7 @@ NextPageLib.prototype.FilterTable = function () {
      };
 };
 
-NextPageLib.prototype.ProcessSortEvent = function (id) {
+TurboTablesLib.prototype.ProcessSortEvent = function (id) {
      console.log('Processing sort event for col id: ' + id);
      //Find and restore the text of the last sort column
      var text = document.getElementById(this.sortColumn).firstChild.innerHTML;

@@ -1,7 +1,7 @@
 $(document).ready(function () {
      var baseUrl = '/api/';
 
-     var customerTable = new NextPageLib({
+     var customerTable = new TurboTablesLib({
           tableId: 'CustomerTable',
           totalItemsAttribute: 'ctTotalItems',
           page: 1,

@@ -16,7 +16,6 @@ select,
 textarea {
     max-width: 280px;
 }
-/* Default is hide for spinner*/
 .spinner {
      display: none;
      top: 30%;
@@ -25,10 +24,6 @@ textarea {
      height: 200px;
      position: fixed;
      z-index: 1;
-}
-/* Default is hide for NoRecordsFound */
-.no-records-found {
-     display: none;
 }
 .table-filter {
      float: right;

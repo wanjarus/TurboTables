@@ -33,7 +33,7 @@
     <Compile Include="public\javascripts\customer.js" />
     <Compile Include="public\javascripts\pager.js" />
     <Compile Include="public\javascripts\customeradd.js" />
-    <Compile Include="public\javascripts\nextpagelib.js" />
+    <Compile Include="public\javascripts\turbotables.js" />
     <Compile Include="repository.js" />
     <Compile Include="app.js" />
     <Content Include="customer.json">

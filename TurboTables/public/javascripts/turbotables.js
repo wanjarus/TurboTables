@@ -10,6 +10,7 @@
 //   getPageSize()
 //   getSortColumn()
 //   getSortDirection()
+//   showSpinner(show)
 //
 //Private methods:
 //   CreateFilterRow(tableId)
@@ -19,9 +20,8 @@
 //   PreviousPage(event)
 //   NextPage(event)
 //   LastPage(event)
-//   ShowTableInfo()
 //   UpdatePagerControls()
-//   ShowSpinner(show)
+//   ShowTableInfo()
 //   FilterTable()
 //   ProcessSortEvent(id)
 
@@ -106,8 +106,9 @@ TurboTablesLib.prototype.setDataBinding = function (dataBinder) {
 TurboTablesLib.prototype.endDataBinding = function (totalItems) {
      this.totalItems = totalItems;
      document.getElementById(this.tableId).setAttribute(this.totalItemsAttribute, this.totalItems);
+     this.ShowTableInfo();
      //Stop the spinner
-     this.ShowSpinner(false);
+     this.showSpinner(false);
 };
 
 TurboTablesLib.prototype.getPage = function () {
@@ -125,6 +126,15 @@ TurboTablesLib.prototype.getSortColumn = function () {
 
 TurboTablesLib.prototype.getSortDirection = function () {
      return this.sortDirection;
+};
+
+//Show / Hide waiting data spinner
+TurboTablesLib.prototype.showSpinner = function (show) {
+     if (show)
+          document.getElementById(this.spinnerId).style.display = 'block';
+     else
+          document.getElementById(this.spinnerId).style.display = 'none';
+
 };
 //Create 'private' Helper functions
 
@@ -301,10 +311,9 @@ TurboTablesLib.prototype.CreatePagingControls = function (tableId) {
 TurboTablesLib.prototype.FirstPage = function () {
      this.page = 1;
      //Start the spinner
-     this.ShowSpinner(true);
+     this.showSpinner(true);
      //Call data binding
      this.dataBinder(this.page, this.pageSize, this.sortColumn, this.sortDirection);
-     this.ShowTableInfo();
 };
 
 //Move to previous display page
@@ -312,10 +321,9 @@ TurboTablesLib.prototype.PreviousPage = function () {
      if (this.page > 1) {
           this.page = this.page - 1;
           //Start the spinner
-          this.ShowSpinner(true);
+          this.showSpinner(true);
           //Call data binding
           this.dataBinder(this.page, this.pageSize, this.sortColumn, this.sortDirection);
-          this.ShowTableInfo();
     }
 };
 
@@ -334,10 +342,9 @@ TurboTablesLib.prototype.NextPage = function () {
     if (this.page < lastPage) {
          this.page = this.page + 1;
          //Start the spinner
-         this.ShowSpinner(true);
+         this.showSpinner(true);
          //call data binding
          this.dataBinder(this.page, this.pageSize, this.sortColumn, this.sortDirection);
-         this.ShowTableInfo();
     }
 };
 
@@ -352,10 +359,9 @@ TurboTablesLib.prototype.LastPage = function () {
      }
 
      //Start the spinner
-     this.ShowSpinner(true);
+     this.showSpinner(true);
      //call data binding
      this.dataBinder(this.page, this.pageSize, this.sortColumn, this.sortDirection);
-     this.ShowTableInfo();
 };
 
 //UpdatePageSize
@@ -370,28 +376,10 @@ TurboTablesLib.prototype.UpdatePageSize = function () {
         this.pageSize = this.totalItems;
 
     //Start the spinner
-    this.ShowSpinner(true);
+    this.showSpinner(true);
     //call data binding
     this.dataBinder(this.page, this.pageSize, this.sortColumn, this.sortDirection);
     this.ShowTableInfo();
-};
-
-//show page number
-TurboTablesLib.prototype.ShowTableInfo = function () {
-
-     //Update the Table Info label
-     var high = this.pageSize * this.page;
-     if (high > this.totalItems)
-          high = this.totalItems;
-     if (this.page === 1)
-          low = 1;
-     else
-          low = ((this.page - 1) * this.pageSize) + 1;
-     var tableInfoText = this.tableInfoTemplate.replace('{0}', low).replace('{1}', high).replace('{2}', this.totalItems);
-     document.getElementById(this.tableInfoId).innerHTML = tableInfoText;
-
-     //Update the Pager controls
-     this.UpdatePagerControls();
 };
 
 TurboTablesLib.prototype.UpdatePagerControls = function() {
@@ -420,12 +408,22 @@ TurboTablesLib.prototype.UpdatePagerControls = function() {
      }
 };
 
-TurboTablesLib.prototype.ShowSpinner = function (show) {
-     if (show)
-          document.getElementById(this.spinnerId).style.display = 'block';
-     else
-          document.getElementById(this.spinnerId).style.display = 'none';
+//show page number
+TurboTablesLib.prototype.ShowTableInfo = function () {
 
+     //Update the Table Info label
+     var high = this.pageSize * this.page;
+     if (high > this.totalItems)
+          high = this.totalItems;
+     if (this.page === 1)
+          low = 1;
+     else
+          low = ((this.page - 1) * this.pageSize) + 1;
+     var tableInfoText = this.tableInfoTemplate.replace('{0}', low).replace('{1}', high).replace('{2}', this.totalItems);
+     document.getElementById(this.tableInfoId).innerHTML = tableInfoText;
+
+     //Update the Pager controls
+     this.UpdatePagerControls();
 };
 
 TurboTablesLib.prototype.FilterTable = function () {
@@ -481,8 +479,7 @@ TurboTablesLib.prototype.ProcessSortEvent = function (id) {
      }
 
      //Start the spinner
-     this.ShowSpinner(true);
+     this.showSpinner(true);
      //call data binding
      this.dataBinder(this.page, this.pageSize, this.sortColumn, this.sortDirection);
-     this.ShowTableInfo();
 };

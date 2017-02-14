@@ -14,7 +14,7 @@ For more informaton:
   * Add CCS links for FontAwesome and TurboTables
 ```css
 <link rel="stylesheet" type="text/css" href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css ">
-<link rel="stylesheet" type="text/css" href=/stylesheets/turbotables.css" />
+<link rel="stylesheet" type="text/css" href="/stylesheets/turbotables.css" />
 ```
 1. HTML5 <b>table</b> changes
   * Add <b>id</b> attribute to <b>table</b> tag
@@ -29,8 +29,8 @@ For more informaton:
             <thead>
                 <tr class="colHeaders">
                     <th id="Id" class="sortable"> <a href="#">ID</a></th>
-                    <th id="FirstName” class="sortable"><a href="#">First Name</a></th>
-                    <th id="LastName” class="sortable"> <a href="#">Last Name</a></th>
+                    <th id="FirstName" class="sortable"><a href="#">First Name</a></th>
+                    <th id="LastName" class="sortable"> <a href="#">Last Name</a></th>
                     <th id="Email" class="sortable"><a href="#">E-Mail</a></th>
                 </tr>
             </thead>
@@ -81,6 +81,21 @@ customerTable.setDataBinding(CustomerList);
             error: function (result, status, xhr) {
                 bindNoRecords(gridBodyId);
             }
+	    });
+    }
+	
+	function bindGrid(grid, src, data) {
+        var result = '{"' + grid + '":' + JSON.stringify(data) + "}";
+        var source = $('#' + src).html();
+        var template = Handlebars.compile(source);
+        var html = template(JSON.parse(result));
+        $("#" + grid).html(html);
+    }
+	
+    function bindNoRecords(gridBodyId) {
+         var html = '<tr id="noRecordsFound"><td class="lead text-left text-danger" colspan= "4">No Records Found!</td></tr>';
+         $("#" + gridBodyId).html(html);
+    }			
 ```
 1. Add TurboTables.js to page scripts
 ```js

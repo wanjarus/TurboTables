@@ -54,6 +54,8 @@ function TurboTablesLib(options) {
      this.prevButtonId = 'prev';
      this.nextButtonId = 'next';
      this.lastButtonId = 'last';
+     this.jumpButtonId = 'jump';
+     this.jumpInputId = 'jumpInput';
      this.spinnerId = 'spinner';
      this.dataBinder = function () { };
 
@@ -221,7 +223,7 @@ TurboTablesLib.prototype.EnableRowSorting = function (tableId) {
      };
 };
 
-//Create the Paging controls (first, previous, next, last) and Page Sizer dropdown list
+//Create the Paging controls (first, previous, jump, next, last) and Page Sizer dropdown list
 TurboTablesLib.prototype.CreatePagingControls = function (tableId) {
 
      //Create elements in the paging controls row
@@ -232,7 +234,7 @@ TurboTablesLib.prototype.CreatePagingControls = function (tableId) {
 
      //Create table-pager control button group
      var bgColumnNode = document.createElement('div');
-     bgColumnNode.className = 'col-sm-7';
+     bgColumnNode.className = 'col-sm-4';
      var bgGroupNode = document.createElement('div');
      bgGroupNode.className = 'btn-group';
      var firstButtonNode = document.createElement('button');
@@ -262,9 +264,32 @@ TurboTablesLib.prototype.CreatePagingControls = function (tableId) {
      bgGroupNode.appendChild(lastButtonNode);
      bgColumnNode.appendChild(bgGroupNode);
 
+     //Create jump input
+     var jumpColumnNode = document.createElement('div');
+     jumpColumnNode.className = 'col-sm-4';
+     var jbgGroupNode = document.createElement('div');
+     jbgGroupNode.className = 'input-group';
+     var jumpButtonSpanNode = document.createElement('span');
+     jumpButtonSpanNode.className = 'input-group-btn';
+     var jumpButtonNode = document.createElement('button');
+     jumpButtonNode.className = 'btn btn-default';
+     jumpButtonNode.innerHTML = 'Jump';
+     jumpButtonNode.id = this.jumpButtonId;
+     jumpButtonNode.setAttribute('type', 'button');
+     var jumpInputNode = document.createElement('input');
+     jumpInputNode.className = 'form-control input-xs';
+     jumpInputNode.id = this.jumpInputId;
+     jumpInputNode.setAttribute('name', 'jumpInput');
+     jumpInputNode.setAttribute('type', 'number');
+     jumpInputNode.value = '1';
+     jumpButtonSpanNode.appendChild(jumpButtonNode);
+     jbgGroupNode.appendChild(jumpButtonSpanNode);
+     jbgGroupNode.appendChild(jumpInputNode);
+     jumpColumnNode.appendChild(jbgGroupNode);
+
      //create table-pager pageSizer
      var sizerColumnNode = document.createElement('div');
-     sizerColumnNode.className = 'col-sm-5';
+     sizerColumnNode.className = 'col-sm-4';
      var pgSizerNode = document.createElement('div');
      pgSizerNode.className = 'table-pageSizer';
      var labelPgSizerNode = document.createElement('label');
@@ -278,6 +303,7 @@ TurboTablesLib.prototype.CreatePagingControls = function (tableId) {
      sizerColumnNode.appendChild(pgSizerNode);
 
      tablePagerNode.appendChild(bgColumnNode);
+     tablePagerNode.appendChild(jumpColumnNode);
      tablePagerNode.appendChild(sizerColumnNode);
      pagingCtrlNode.appendChild(tablePagerNode);
      var insertPosition = document.getElementById(tableId).parentNode.parentNode;
@@ -299,6 +325,7 @@ TurboTablesLib.prototype.CreatePagingControls = function (tableId) {
      var self = this;
      firstButtonNode.addEventListener('click', function () { self.FirstPage(); });
      prevButtonNode.addEventListener('click', function () { self.PreviousPage(); });
+     jumpButtonNode.addEventListener('click', function () { self.JumpPage(); });
      nextButtonNode.addEventListener('click', function () { self.NextPage(); });
      lastButtonNode.addEventListener('click', function () { self.LastPage(); });
 
@@ -325,6 +352,39 @@ TurboTablesLib.prototype.PreviousPage = function () {
           //Call data binding
           this.dataBinder(this.page, this.pageSize, this.sortColumn, this.sortDirection);
     }
+};
+
+//Move to any display page
+TurboTablesLib.prototype.JumpPage = function () {
+     var lastPage = 0, jumpPage = 1;
+     var input = document.getElementById(this.jumpInputId);
+
+     if (input.value === "") {
+          input.value = 1;
+     }
+     else {
+          jumpPage = parseInt(input.value, 10);
+
+          var remainder = this.totalItems % this.pageSize;
+          if (remainder > 0) {
+               lastPage = ((this.totalItems - remainder) / this.pageSize) + 1;
+          }
+          else {
+               lastPage = this.totalItems / this.pageSize;
+          }
+
+          if (jumpPage < 0) { this.page = 1; }
+          else if (jumpPage > lastPage) { this.page = lastPage }
+          else { this.page = jumpPage; }
+
+          //Start the spinner
+          this.showSpinner(true);
+          //Call data binding
+          this.dataBinder(this.page, this.pageSize, this.sortColumn, this.sortDirection);
+
+          input.value = this.page;
+     }
+
 };
 
 //Move to next display page

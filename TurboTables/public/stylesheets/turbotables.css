@@ -21,3 +21,6 @@
 .table-pager {
      display: inline;
 }
+.input-xs {
+     max-width: 60px;
+}

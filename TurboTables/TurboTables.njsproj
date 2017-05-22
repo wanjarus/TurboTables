@@ -49,6 +49,7 @@
     <Content Include="public\images\spinner-128.gif" />
     <Content Include="public\stylesheets\site.css" />
     <Compile Include="routes\about.js" />
+    <Content Include="public\stylesheets\turbotables.css" />
     <Content Include="views\pager.hbs" />
     <Content Include="views\customeradd.hbs" />
     <Content Include="views\customerdetail.hbs" />
